@@ -18,6 +18,9 @@ public class DFNoise2D : MonoBehaviour
     [SerializeField] int _rows = 16;
     [SerializeField] float _lineScale = 0.1f;
     [SerializeField] Color _lineColor = Color.red;
+    [SerializeField] ParticleSystem _particleSystem;
+
+    ParticleSystem.Particle[] _particles;
 
     float GetNoise(Vector2 p)
     {
@@ -40,6 +43,26 @@ public class DFNoise2D : MonoBehaviour
         return new Vector2(g.y, -g.x);
     }
 
+    void Update()
+    {
+        if (_particles == null || _particles.Length != _particleSystem.maxParticles)
+            _particles = new ParticleSystem.Particle[_particleSystem.maxParticles];
+
+        var pcount = _particleSystem.GetParticles(_particles);
+
+        for (var i = 0; i < pcount; i++)
+        {
+            var p = _particles[i];
+
+            var v = GetDFNoise(p.position);
+            p.velocity = p.velocity * 0.98f + new Vector3(v.x, v.y, 0) * Time.deltaTime * 0.1f;
+
+            _particles[i] = p;
+        }
+
+        _particleSystem.SetParticles(_particles, pcount);
+    }
+
     void OnDrawGizmos()
     {
         var cubeScale = new Vector3(1.0f / _columns, 1.0f / _rows, 1);
@@ -59,8 +82,8 @@ public class DFNoise2D : MonoBehaviour
                 var dp = _lineMode == LineMode.Gradient ?
                     GetGradient(p) : GetDFNoise(p);
 
-                Gizmos.color = new Color(cn, cn, cn, 1);
-                Gizmos.DrawCube(new Vector3(px, py, 1), cubeScale);
+                //Gizmos.color = new Color(cn, cn, cn, 1);
+                //Gizmos.DrawCube(new Vector3(px, py, 1), cubeScale);
 
                 Gizmos.color = _lineColor;
                 Gizmos.DrawLine(p, p + dp * lineScale);

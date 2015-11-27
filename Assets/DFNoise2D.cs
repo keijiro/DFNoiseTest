@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[ExecuteInEditMode]
 public class DFNoise2D : MonoBehaviour
 {
     public enum LineMode { Gradient, DFNoise }
@@ -16,6 +17,7 @@ public class DFNoise2D : MonoBehaviour
     [SerializeField] int _columns = 16;
     [SerializeField] int _rows = 16;
     [SerializeField] float _lineScale = 0.1f;
+    [SerializeField] Color _lineColor = Color.red;
 
     float GetNoise(Vector2 p)
     {
@@ -58,11 +60,17 @@ public class DFNoise2D : MonoBehaviour
                     GetGradient(p) : GetDFNoise(p);
 
                 Gizmos.color = new Color(cn, cn, cn, 1);
-                Gizmos.DrawCube(new Vector3(px, py, 0), cubeScale);
+                Gizmos.DrawCube(new Vector3(px, py, 1), cubeScale);
 
-                Gizmos.color = Color.red;
+                Gizmos.color = _lineColor;
                 Gizmos.DrawLine(p, p + dp * lineScale);
             }
         }
+    }
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(0, 0, 1000, 1000),
+            "Please turn on 'Gizmos' on the Game view if you can't see anything.");
     }
 }

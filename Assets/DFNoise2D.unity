@@ -145,7 +145,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 0.5
+  orthographic size: 0.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -202,9 +202,10 @@ MonoBehaviour:
   _animationSpeed: 0.4
   _delta: 0.0001
   _lineMode: 1
-  _columns: 50
-  _rows: 50
+  _columns: 32
+  _rows: 32
   _lineScale: 0.3
+  _lineColor: {r: 1, g: 0, b: 0, a: 0.709}
 --- !u!4 &1678747807
 Transform:
   m_ObjectHideFlags: 0

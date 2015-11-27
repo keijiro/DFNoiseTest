@@ -12,6 +12,9 @@ public class DFNoise2D : MonoBehaviour
     [Header("Vector Analysis")]
     [SerializeField] float _delta = 0.0001f;
 
+    [SerializeField] float _advect = 0.1f;
+    [SerializeField] float _damper = 0.01f;
+
     [Header("Visualization")]
     [SerializeField] LineMode _lineMode;
     [SerializeField] int _columns = 16;
@@ -55,7 +58,7 @@ public class DFNoise2D : MonoBehaviour
             var p = _particles[i];
 
             var v = GetDFNoise(p.position);
-            p.velocity = p.velocity * 0.98f + new Vector3(v.x, v.y, 0) * Time.deltaTime * 0.1f;
+            p.velocity = p.velocity * (1.0f - _damper) + new Vector3(v.x, v.y, 0) * Time.deltaTime * _advect;
 
             _particles[i] = p;
         }
